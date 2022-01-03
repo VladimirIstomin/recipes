@@ -1,8 +1,6 @@
 package recipes;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +13,7 @@ public class Recipe {
     @NotNull
     private String description;
     @NotNull
-    private String ingredients;
+    private String[] ingredients;
     @NotNull
-    private String directions;
+    private String[] directions;
 }

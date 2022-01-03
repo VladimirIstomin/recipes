@@ -1,32 +1,35 @@
 package recipes;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 public class RecipeController {
-    private Recipe recipe = new Recipe(
-            "Fresh Mint Tea",
-            "Light, aromatic and refreshing beverage",
-            "boiled water, honey, fresh mint leaves",
-            "1) Boil water. 2) Pour boiling hot water into a mug. "
-                    + "3) Add fresh mint leaves. 4) Mix and let the mint leaves seep for 3-5 minutes. "
-                    + "5) Add honey and mix again."
-    );
+    RecipesContainer recipesContainer;
 
-    @GetMapping("/api/recipe")
-    public Recipe getRecipe() {
-        return recipe;
+    public RecipeController(@Autowired RecipesContainer recipesContainer) {
+        this.recipesContainer = recipesContainer;
     }
 
-    @PostMapping("/api/recipe")
-    public ResponseEntity<String> postRecipe(@Valid @RequestBody Recipe recipe) {
-        this.recipe = recipe;
-        return ResponseEntity.ok("Recipe added");
+    @GetMapping("/api/recipe/{id}")
+    public ResponseEntity<Recipe> getRecipe(@PathVariable long id) {
+        Recipe recipe = recipesContainer.getRecipe(id);
+
+        if (recipe != null) {
+            return new ResponseEntity<>(recipe, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/api/recipe/new")
+    public ResponseEntity<Map<String, Long>> postRecipe(@Valid @RequestBody Recipe recipe) {
+        Map<String, Long> result = recipesContainer.addRecipe(recipe);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
