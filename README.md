@@ -1,5 +1,5 @@
 # Recipes
-A simple RESTful API to store and retrieve cooking recipes
+It'a simple RESTful API to store and retrieve cooking recipes
 ## Some used technologies
 - Spring Boot
 - Spring MVC
@@ -12,7 +12,7 @@ A simple RESTful API to store and retrieve cooking recipes
   - email - should contain @ and . as usual emails
   - password - should not be blank and at least 8 characters long
   
-*The following requests are only for authorized users*
+  *The following requests are only for authorized users*
 
 - ```POST /api/recipe/new``` to create new recipe. Takes JSON as body with the following fields and returns an id of created recipe:
   - name - should not be blank
