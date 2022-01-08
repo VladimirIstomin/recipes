@@ -1,6 +1,7 @@
 package recipes.services;
 
 import recipes.model.Recipe;
+import recipes.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public interface RecipeService {
 
     Optional<List<Recipe>> getRecipesByCategory(String category);
 
-    boolean putRecipe(Recipe recipe, long id);
+    void putRecipe(Recipe recipe, long id, User user);
 
-    boolean deleteRecipe(long id);
+    void deleteRecipe(long id);
 }

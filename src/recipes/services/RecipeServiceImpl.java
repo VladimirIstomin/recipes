@@ -3,6 +3,7 @@ package recipes.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipes.model.Recipe;
+import recipes.model.User;
 import recipes.repositories.RecipeRepository;
 
 import java.util.List;
@@ -40,20 +41,18 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public boolean putRecipe(Recipe recipe, long id) {
+    public void putRecipe(Recipe recipe, long id, User user) {
         if (recipeRepository.existsById(id)) {
             recipe.setId(id);
+            recipe.setUser(user);
             recipeRepository.save(recipe);
-            return true;
         }
-        return false;
     }
 
-    public boolean deleteRecipe(long id) {
+    @Override
+    public void deleteRecipe(long id) {
         if (recipeRepository.existsById(id)) {
             recipeRepository.deleteById(id);
-            return true;
         }
-        return false;
     }
 }

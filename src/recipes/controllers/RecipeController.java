@@ -3,9 +3,13 @@ package recipes.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import recipes.model.Recipe;
+import recipes.model.User;
 import recipes.services.RecipeService;
+import recipes.services.UserService;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -17,14 +21,19 @@ import java.util.Optional;
 @RequestMapping("/api/recipe")
 public class RecipeController {
     private final RecipeService recipeService;
+    private final UserService userService;
 
     @Autowired
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, UserService userService) {
         this.recipeService = recipeService;
+        this.userService = userService;
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Map<String, Long>> postRecipe(@Valid @RequestBody Recipe recipe) {
+    public ResponseEntity<Map<String, Long>> postRecipe(@Valid @RequestBody Recipe recipe,
+                                                        @AuthenticationPrincipal UserDetails userDetails) {
+        Optional<User> user = userService.getUserByEmail(userDetails.getUsername());
+        recipe.setUser(user.orElseThrow());
         return new ResponseEntity<>(recipeService.postRecipe(recipe), HttpStatus.OK);
     }
 
@@ -53,12 +62,32 @@ public class RecipeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> putRecipe(@Valid @RequestBody Recipe recipe, @PathVariable long id) {
-        return new ResponseEntity<>(recipeService.putRecipe(recipe, id) ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> putRecipe(@Valid @RequestBody Recipe recipe, @PathVariable long id,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByEmail(userDetails.getUsername()).orElseThrow();
+        Optional<Recipe> oldRecipe = recipeService.getRecipe(id);
+        if (oldRecipe.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else if (!oldRecipe.orElseThrow().getUser().equals(user)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            recipeService.putRecipe(recipe, id, user);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRecipe(@PathVariable long id) {
-        return new ResponseEntity<>(recipeService.deleteRecipe(id) ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> deleteRecipe(@PathVariable long id,
+                                               @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByEmail(userDetails.getUsername()).orElseThrow();
+        Optional<Recipe> oldRecipe = recipeService.getRecipe(id);
+        if (oldRecipe.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else if (!oldRecipe.orElseThrow().getUser().equals(user)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            recipeService.deleteRecipe(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 }

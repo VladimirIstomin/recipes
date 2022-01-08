@@ -12,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "recipes")
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class Recipe {
@@ -40,4 +39,9 @@ public class Recipe {
 
     @UpdateTimestamp
     private LocalDateTime date;
+
+    @ManyToOne
+    @JoinColumn(name = "UserID")
+    @JsonIgnore
+    private User user;
 }
