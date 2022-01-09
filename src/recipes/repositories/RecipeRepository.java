@@ -1,7 +1,7 @@
 package recipes.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import recipes.model.Recipe;
+import recipes.entities.Recipe;
 
 import java.util.List;
 import java.util.Optional;

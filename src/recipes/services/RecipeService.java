@@ -1,7 +1,7 @@
 package recipes.services;
 
-import recipes.model.Recipe;
-import recipes.model.User;
+import recipes.entities.Recipe;
+import recipes.entities.User;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package recipes.services;
 
-import recipes.model.User;
+import recipes.entities.User;
 
 import java.util.Optional;
 

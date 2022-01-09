@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import recipes.model.Recipe;
-import recipes.model.User;
+import recipes.entities.Recipe;
+import recipes.entities.User;
 import recipes.services.RecipeService;
 import recipes.services.UserService;
 

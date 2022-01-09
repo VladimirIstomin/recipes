@@ -2,8 +2,8 @@ package recipes.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import recipes.model.Recipe;
-import recipes.model.User;
+import recipes.entities.Recipe;
+import recipes.entities.User;
 import recipes.repositories.RecipeRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package recipes.model;
+package recipes.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

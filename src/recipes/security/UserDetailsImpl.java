@@ -1,9 +1,8 @@
 package recipes.security;
 
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import recipes.model.User;
+import recipes.entities.User;
 
 import java.util.Collection;
 
