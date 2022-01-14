@@ -2,7 +2,6 @@
 It'a simple RESTful API to store and retrieve cooking recipes
 ## Some used technologies
 - Spring Boot
-- Spring MVC
 - Spring Data JPA (Hibernate as ORM and H2 as a database)
 - Spring Security
 - Gradle
